@@ -17,7 +17,7 @@ int main() {
 
 // --------------------------------------------------
 
-void a_print_runwayAnimation() {
+void print_runwayAnimation() {
     print_entireRunway();
     struct Pair prevPos, newPos;
 
