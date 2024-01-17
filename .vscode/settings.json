@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "operationsandutilities.h": "c",
+        "queue.h": "c",
+        "simulator.h": "c",
+        "stdio.h": "c"
+    }
+    /*"C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe",
+    "files.associations": {
+        "iosfwd": "cpp",
+        "array": "cpp",
+        "unordered_map": "cpp",
+        "new": "cpp"
+    }*/
+}

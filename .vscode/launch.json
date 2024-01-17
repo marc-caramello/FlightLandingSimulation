@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "externalConsole": true,
+            "name": "Start External Program",
+            "preLaunchTask": "Compile, Run, & Debug",
+            "program": "${fileDirname}\\runThis.exe",
+            "request": "launch",
+            "type": "cppdbg"
+        }
+    ]
+}
