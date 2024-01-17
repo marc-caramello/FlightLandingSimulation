@@ -7,7 +7,6 @@ int main() {
     cbreak();
     keypad(stdscr, true);
     
-    print_entireRunway();
     print_runwayAnimation();
     getch();
     clear();
@@ -17,6 +16,25 @@ int main() {
 }
 
 // --------------------------------------------------
+
+void print_runwayAnimation() {
+    print_entireRunway();
+    struct Pair prevPos, newPos;
+
+    // Prints: top_left ---> bottom_right
+    /*for (int i = 0; i <= 5; i++) {
+        prevPos = newPos;
+        newPos = (struct Pair){i, (2 * i) + 1};
+        print_eachFrame(prevPos, newPos);
+    }
+    // Prints: left ---> right
+    for(int i = 13; i <= 38; i++) {
+        prevPos = newPos;
+        newPos = (struct Pair){6, i};
+        print_eachFrame(prevPos, newPos);
+    }*/
+    print_thankYou();
+}
 
 void print_entireRunway() {
     printw("                                              \n");
@@ -31,26 +49,20 @@ void print_entireRunway() {
     printw("      |________________________________|      \n");
 }
 
-void print_runwayAnimation() {
-    struct Pair prevPos, newPos;
-
-    // Prints: top_left ---> bottom_right
-    for (int i = 0; i <= 5; i++) {
-        prevPos = newPos;
-        newPos = (struct Pair){i, (2 * i) + 1};
-        print_eachFrame(prevPos, newPos);
-    }
-    // Prints: left ---> right
-    for(int i = 13; i <= 38; i++) {
-        prevPos = newPos;
-        newPos = (struct Pair){6, i};
-        print_eachFrame(prevPos, newPos);
-    }
-}
-
 void print_eachFrame(struct Pair prevPos, struct Pair newPos) {
     mvprintw(prevPos.horiz, prevPos.vert, " ");
     mvprintw(newPos.horiz, newPos.vert, "-");
     refresh();
     Sleep(500);
+}
+
+void print_thankYou() {
+    mvprintw(13, 0, "");
+    printw("       Dear,                                         \n");
+    printw("                                                     \n");
+    printw("       Mr. Jost,                                     \n");
+    printw("       Mr. Parsons,                                  \n");
+    printw("       Mr. Petrucci,                                 \n");
+    printw("                                                     \n");
+    printw("       Thank you for giving me the opportunity to interview for this amazing position at RTX.\n");
 }

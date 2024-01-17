@@ -7,6 +7,7 @@ struct Pair {
     int vert;
 };
 
-void print_entireRunway();
 void print_runwayAnimation();
+void print_entireRunway();
 void print_eachFrame(struct Pair prevPos, struct Pair newPos);
+void print_thankYou();
