@@ -22,7 +22,7 @@ void print_runwayAnimation() {
     struct Pair prevPos, newPos;
 
     // Prints: top_left ---> bottom_right
-    /*for (int i = 0; i <= 5; i++) {
+    for (int i = 0; i <= 5; i++) {
         prevPos = newPos;
         newPos = (struct Pair){i, (2 * i) + 1};
         print_eachFrame(prevPos, newPos);
@@ -32,7 +32,7 @@ void print_runwayAnimation() {
         prevPos = newPos;
         newPos = (struct Pair){6, i};
         print_eachFrame(prevPos, newPos);
-    }*/
+    }
     print_thankYou();
 }
 
