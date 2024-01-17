@@ -6,7 +6,7 @@
             "command": "gcc",
             "args": [
                 "-g",
-                "${fileDirname}\\main.c",
+                "${fileDirname}\\**.c",
                 "-o",
                 "${fileDirname}\\runThis.exe",
                 "-lncurses",
