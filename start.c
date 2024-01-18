@@ -12,7 +12,7 @@ int main() {
     clear();
 
     endwin();
-    return 0;    
+    return 0;
 }
 
 // --------------------------------------------------
@@ -22,13 +22,13 @@ void print_runwayAnimation() {
     struct Pair prevPos, newPos;
 
     // Prints: top_left ---> bottom_right
-    for (int i = 0; i <= 5; i++) {
+    for (int i = 0; i <= 6; i++) {
         prevPos = newPos;
         newPos = (struct Pair){i, (2 * i) + 1};
         print_eachFrame(prevPos, newPos);
     }
     // Prints: left ---> right
-    for(int i = 13; i <= 38; i++) {
+    for(int i = 14; i <= 40; i++) {
         prevPos = newPos;
         newPos = (struct Pair){6, i};
         print_eachFrame(prevPos, newPos);
@@ -37,32 +37,26 @@ void print_runwayAnimation() {
 }
 
 void print_entireRunway() {
-    printw("                                              \n");
-    printw("                                              \n");
-    printw("       ________________________________       \n");
-    printw("      |                                |      \n");
-    printw("      |                                |      \n");
-    printw("      |                                |      \n");
-    printw("      |                                |      \n");
-    printw("      |                                |      \n");
-    printw("      |                                |      \n");
-    printw("      |________________________________|      \n");
+    printw("                                                    \n");
+    printw("                                                    \n");
+    printw("                                                    \n");
+    printw("                                                    \n");
+    printw("           ______________________________           \n");
+    printw("          |                              |          \n");
+    printw("          |                              |          \n");
+    printw("          |______________________________|          \n");
 }
 
 void print_eachFrame(struct Pair prevPos, struct Pair newPos) {
     mvprintw(prevPos.horiz, prevPos.vert, " ");
     mvprintw(newPos.horiz, newPos.vert, "-");
     refresh();
-    Sleep(500);
+    Sleep(200);
 }
 
 void print_thankYou() {
-    mvprintw(13, 0, "");
-    printw("       Dear,                                         \n");
-    printw("                                                     \n");
-    printw("       Mr. Jost,                                     \n");
-    printw("       Mr. Parsons,                                  \n");
-    printw("       Mr. Petrucci,                                 \n");
-    printw("                                                     \n");
-    printw("       Thank you for giving me the opportunity to interview for this amazing position at RTX.\n");
+    mvprintw(6, 40, " ");
+    mvprintw(9, 0, "");
+    printw("           The plane successfully landed!           \n");
+    refresh();
 }
