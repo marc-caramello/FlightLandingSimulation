@@ -1,7 +1,7 @@
 #include "start.h"
 
 int main() {
-    initscr();
+    /*initscr();
     curs_set(0);
     noecho();
     cbreak();
@@ -11,7 +11,11 @@ int main() {
     getch();
     clear();
 
-    endwin();
+    endwin();*/
+
+    // TEMP CODE START
+    enterAirportCode();
+    // TEMP CODE END
     return 0;
 }
 
@@ -60,3 +64,44 @@ void print_thankYou() {
     printw("           The plane successfully landed!           \n");
     refresh();
 }
+
+// --------------------------------------------------
+
+void enterAirportCode()
+{
+    do {
+        printf("Please enter the IATA airport code: ");
+        char userInput[100];  // Increase the size to accommodate 3 characters and the null terminator
+        fgets(userInput, sizeof(userInput), stdin);  // Limit the number of characters read
+        userInput[strcspn(userInput, "\n")] = 0; 
+
+        bool allLettersAreAlpha = true;
+
+        for(int i = 0; i < strlen(userInput); i++) {
+            userInput[i] = toupper(userInput[i]);
+
+            if(!isalpha(userInput[i])) {
+                allLettersAreAlpha = false;
+            }
+        }
+        if(strlen(userInput) == 3 && allLettersAreAlpha) {
+            break;
+        }
+        else {
+            printf("\"%s\" is not an acceptable IATA airport code\n", userInput);
+            printf("\n");
+        }
+    } while(true);
+}
+
+/*
+void downloadJsonFile()
+{
+    DWORD length = GetCurrentDirectoryW(0, NULL);
+    wchar_t* pathToCurrentFolder = malloc(length * sizeof(wchar_t));
+    DWORD result = GetCurrentDirectoryW(length, pathToCurrentFolder);
+
+    const wchar_t* url = L"https://airlabs.co/api/v9/schedules?arr_iata=ATL&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
+    URLDownloadToFile(NULL, url, pathToCurrentFolder, 0, NULL);
+}
+*/
