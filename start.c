@@ -17,8 +17,6 @@ void startNCurses()
     cbreak();                   // Disable line buffering
     noecho();                   // Disable echoing of characters
     keypad(stdscr, TRUE);       // Enable special key capture
-    printw("Hello, NCurses!");  // Display a message
-    refresh();
 }
 
 void enterAirportCode_and_downloadJsonFile()
@@ -26,8 +24,8 @@ void enterAirportCode_and_downloadJsonFile()
     char finalInput[3];
     do {
         printf("Please enter the IATA airport code: ");
-        char userInput[100];  // Increase the size to accommodate 3 characters and the null terminator
-        fgets(userInput, sizeof(userInput), stdin);  // Limit the number of characters read
+        char userInput[100];
+        fgets(userInput, sizeof(userInput), stdin);
         userInput[strcspn(userInput, "\n")] = 0; 
 
         bool allLettersAreAlpha = true;
