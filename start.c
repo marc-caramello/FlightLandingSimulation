@@ -12,10 +12,12 @@ int main() {
     clear();
 
     endwin();*/
-
-    // TEMP CODE START
-    enterAirportCode_and_downloadJsonFile();
-    // TEMP CODE END
+    //enterAirportCode_and_downloadJsonFile();
+    FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json");
+    
+    for(int i = 0; i < MAX_FLIGHTS_TO_STORE; i++) {
+        printf("%s %s\n", allFlights[i].flight_iata, allFlights[i].arr_estimated_utc);
+    }
     return 0;
 }
 
@@ -123,9 +125,51 @@ void enterAirportCode_and_downloadJsonFile()
     }
 }
 
-/*
-void downloadJsonFile()
-{
+FlightInfo* parse_json(const char *filename) {
+    FILE *file = fopen(filename, "rb");
+    if (file == NULL) return NULL;
 
+    fseek(file, 0, SEEK_END);
+    long length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *data = (char*)malloc(length + 1);
+    fread(data, 1, length, file);
+    fclose(file);
+    data[length] = '\0';
+
+    cJSON *json = cJSON_Parse(data);
+    if (json == NULL) {
+        free(data);
+        return NULL;
+    }
+
+    // Get the "response" object from the parsed JSON
+    cJSON *response = cJSON_GetObjectItem(json, "response");
+    if (response == NULL) {
+        cJSON_Delete(json);
+        free(data);
+        return NULL;
+    }
+
+    int arraySize = cJSON_GetArraySize(response);
+    int numFlights = arraySize > MAX_FLIGHTS_TO_STORE ? MAX_FLIGHTS_TO_STORE : arraySize;
+
+    FlightInfo *flights = (FlightInfo*)malloc(numFlights * sizeof(FlightInfo));
+
+    for (int i = 0; i < numFlights; i++) {
+        cJSON *item = cJSON_GetArrayItem(response, i);
+        cJSON *flightIata = cJSON_GetObjectItem(item, "flight_iata");
+        cJSON *arrEstimatedUtc = cJSON_GetObjectItem(item, "arr_estimated_utc");
+
+        //printf("%s\n", flightIata->valuestring);
+
+        if (flightIata != NULL && arrEstimatedUtc != NULL) {
+            strncpy(flights[i].flight_iata, flightIata->valuestring, sizeof(flights[i].flight_iata));
+            strncpy(flights[i].arr_estimated_utc, arrEstimatedUtc->valuestring, sizeof(flights[i].arr_estimated_utc));
+        }
+    }
+    cJSON_Delete(json);
+    free(data);
+    return flights;
 }
-*/
