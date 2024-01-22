@@ -8,8 +8,7 @@ struct Pair {
     int vert;
 };
 
-void enterAirportCode();
-void downloadJsonFile();
+void enterAirportCode_and_downloadJsonFile();
 
 // --------------------------------------------------
 

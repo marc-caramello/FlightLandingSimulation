@@ -14,7 +14,7 @@ int main() {
     endwin();*/
 
     // TEMP CODE START
-    enterAirportCode();
+    enterAirportCode_and_downloadJsonFile();
     // TEMP CODE END
     return 0;
 }
@@ -67,8 +67,9 @@ void print_thankYou() {
 
 // --------------------------------------------------
 
-void enterAirportCode()
+void enterAirportCode_and_downloadJsonFile()
 {
+    char finalInput[3];
     do {
         printf("Please enter the IATA airport code: ");
         char userInput[100];  // Increase the size to accommodate 3 characters and the null terminator
@@ -85,6 +86,7 @@ void enterAirportCode()
             }
         }
         if(strlen(userInput) == 3 && allLettersAreAlpha) {
+            strcpy(finalInput, userInput);
             break;
         }
         else {
@@ -92,6 +94,13 @@ void enterAirportCode()
             printf("\n");
         }
     } while(true);
+    const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
+    const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
+    int finalUrl_size = strlen(url_part1) + strlen(url_part2) + strlen(finalInput) + 1;
+    char finalUrl[finalUrl_size];
+    strcpy(finalUrl, url_part1);
+    strcat(finalUrl, finalInput);
+    strcat(finalUrl, url_part2);
 }
 
 /*
