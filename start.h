@@ -1,6 +1,7 @@
 #include <ncurses/ncurses.h>
 #include <stdio.h>
 #include <string.h>
+#include <urlmon.h>
 #include <windows.h>
 
 struct Pair {

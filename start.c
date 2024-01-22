@@ -94,23 +94,38 @@ void enterAirportCode_and_downloadJsonFile()
             printf("\n");
         }
     } while(true);
-    const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
-    const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
-    int finalUrl_size = strlen(url_part1) + strlen(url_part2) + strlen(finalInput) + 1;
-    char finalUrl[finalUrl_size];
-    strcpy(finalUrl, url_part1);
-    strcat(finalUrl, finalInput);
-    strcat(finalUrl, url_part2);
+    char currentDirectory[MAX_PATH];
+    if (GetCurrentDirectory(MAX_PATH, currentDirectory) != 0) {
+        const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
+        const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
+        int finalUrl_size = strlen(url_part1) + strlen(url_part2) + strlen(finalInput) + 1;
+        char finalUrl_narrow[finalUrl_size];
+        strcpy(finalUrl_narrow, url_part1);
+        strcat(finalUrl_narrow, finalInput);
+        strcat(finalUrl_narrow, url_part2);
+
+        // Specify the path where you want to save the downloaded file
+        char filePath[MAX_PATH];
+        snprintf(filePath, MAX_PATH, "%s\\temp.json", currentDirectory);
+
+        // Use URLDownloadToFile to download the file
+        HRESULT result = URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
+
+        if (result == S_OK) {
+            printf("File downloaded successfully.\n");
+        }
+        else {
+            printf("Failed to download the file. Error code: 0x%08x\n", result);
+        }
+    }
+    else {
+        printf("Failed to get the current directory.\n");
+    }
 }
 
 /*
 void downloadJsonFile()
 {
-    DWORD length = GetCurrentDirectoryW(0, NULL);
-    wchar_t* pathToCurrentFolder = malloc(length * sizeof(wchar_t));
-    DWORD result = GetCurrentDirectoryW(length, pathToCurrentFolder);
 
-    const wchar_t* url = L"https://airlabs.co/api/v9/schedules?arr_iata=ATL&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
-    URLDownloadToFile(NULL, url, pathToCurrentFolder, 0, NULL);
 }
 */

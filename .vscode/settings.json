@@ -5,7 +5,10 @@
         "simulator.h": "c",
         "stdio.h": "c",
         "time.h": "c",
-        "ncurses.h": "c"
+        "ncurses.h": "c",
+        "windows.h": "c",
+        "string.h": "c",
+        "urlmon.h": "c"
     }
     /*"C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe",
     "files.associations": {

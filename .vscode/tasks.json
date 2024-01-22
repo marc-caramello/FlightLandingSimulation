@@ -9,6 +9,7 @@
                 "${fileDirname}\\**.c",
                 "-o",
                 "${fileDirname}\\runThis.exe",
+                "-lurlmon",
                 "-lncurses",
                 "-DNCURSES_STATIC"
             ],
