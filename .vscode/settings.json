@@ -8,7 +8,8 @@
         "ncurses.h": "c",
         "windows.h": "c",
         "string.h": "c",
-        "urlmon.h": "c"
+        "urlmon.h": "c",
+        "start.h": "c"
     }
     /*"C_Cpp.default.compilerPath": "C:\\msys64\\mingw64\\bin\\g++.exe",
     "files.associations": {

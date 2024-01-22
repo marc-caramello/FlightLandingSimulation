@@ -1,73 +1,25 @@
 #include "start.h"
 
 int main() {
-    /*initscr();
-    curs_set(0);
-    noecho();
-    cbreak();
-    keypad(stdscr, true);
-    
-    print_runwayAnimation();
-    getch();
-    clear();
-
-    endwin();*/
-    //enterAirportCode_and_downloadJsonFile();
+    enterAirportCode_and_downloadJsonFile();
     FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json");
+    startNCurses();
+    //print_runwayAnimation();
     
-    for(int i = 0; i < MAX_FLIGHTS_TO_STORE; i++) {
-        printf("%s %s\n", allFlights[i].flight_iata, allFlights[i].arr_estimated_utc);
-    }
     return 0;
 }
 
 // --------------------------------------------------
 
-void print_runwayAnimation() {
-    print_entireRunway();
-    struct Pair prevPos, newPos;
-
-    // Prints: top_left ---> bottom_right
-    for (int i = 0; i <= 6; i++) {
-        prevPos = newPos;
-        newPos = (struct Pair){i, (2 * i) + 1};
-        print_eachFrame(prevPos, newPos);
-    }
-    // Prints: left ---> right
-    for(int i = 14; i <= 40; i++) {
-        prevPos = newPos;
-        newPos = (struct Pair){6, i};
-        print_eachFrame(prevPos, newPos);
-    }
-    print_thankYou();
-}
-
-void print_entireRunway() {
-    printw("                                                    \n");
-    printw("                                                    \n");
-    printw("                                                    \n");
-    printw("                                                    \n");
-    printw("           ______________________________           \n");
-    printw("          |                              |          \n");
-    printw("          |                              |          \n");
-    printw("          |______________________________|          \n");
-}
-
-void print_eachFrame(struct Pair prevPos, struct Pair newPos) {
-    mvprintw(prevPos.horiz, prevPos.vert, " ");
-    mvprintw(newPos.horiz, newPos.vert, "-");
-    refresh();
-    Sleep(200);
-}
-
-void print_thankYou() {
-    mvprintw(6, 40, " ");
-    mvprintw(9, 0, "");
-    printw("           The plane successfully landed!           \n");
+void startNCurses()
+{
+    initscr();                  // Initialize NCurses
+    cbreak();                   // Disable line buffering
+    noecho();                   // Disable echoing of characters
+    keypad(stdscr, TRUE);       // Enable special key capture
+    printw("Hello, NCurses!");  // Display a message
     refresh();
 }
-
-// --------------------------------------------------
 
 void enterAirportCode_and_downloadJsonFile()
 {
@@ -94,9 +46,12 @@ void enterAirportCode_and_downloadJsonFile()
         else {
             printf("\"%s\" is not an acceptable IATA airport code\n", userInput);
             printf("\n");
+            printf("Please wait 3 seconds for this screen to exit");
+            Sleep(3000);
+            system("cls");
         }
     } while(true);
-    char currentDirectory[MAX_PATH];
+    /*char currentDirectory[MAX_PATH];
     if (GetCurrentDirectory(MAX_PATH, currentDirectory) != 0) {
         const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
         const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
@@ -122,7 +77,7 @@ void enterAirportCode_and_downloadJsonFile()
     }
     else {
         printf("Failed to get the current directory.\n");
-    }
+    }*/
 }
 
 FlightInfo* parse_json(const char *filename) {
@@ -143,26 +98,20 @@ FlightInfo* parse_json(const char *filename) {
         free(data);
         return NULL;
     }
-
-    // Get the "response" object from the parsed JSON
     cJSON *response = cJSON_GetObjectItem(json, "response");
     if (response == NULL) {
         cJSON_Delete(json);
         free(data);
         return NULL;
     }
-
     int arraySize = cJSON_GetArraySize(response);
     int numFlights = arraySize > MAX_FLIGHTS_TO_STORE ? MAX_FLIGHTS_TO_STORE : arraySize;
-
     FlightInfo *flights = (FlightInfo*)malloc(numFlights * sizeof(FlightInfo));
 
     for (int i = 0; i < numFlights; i++) {
         cJSON *item = cJSON_GetArrayItem(response, i);
         cJSON *flightIata = cJSON_GetObjectItem(item, "flight_iata");
         cJSON *arrEstimatedUtc = cJSON_GetObjectItem(item, "arr_estimated_utc");
-
-        //printf("%s\n", flightIata->valuestring);
 
         if (flightIata != NULL && arrEstimatedUtc != NULL) {
             strncpy(flights[i].flight_iata, flightIata->valuestring, sizeof(flights[i].flight_iata));

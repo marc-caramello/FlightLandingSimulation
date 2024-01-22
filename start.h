@@ -18,12 +18,6 @@ typedef struct {
     char arr_estimated_utc[30];
 } FlightInfo;
 
+void startNCurses();
 void enterAirportCode_and_downloadJsonFile();
 FlightInfo* parse_json(const char *filename);
-
-// --------------------------------------------------
-
-void print_runwayAnimation();
-void print_entireRunway();
-void print_eachFrame(struct Pair prevPos, struct Pair newPos);
-void print_thankYou();
