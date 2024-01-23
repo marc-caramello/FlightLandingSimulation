@@ -3,7 +3,7 @@
 
 int main() {
     // UNCOMMENT THIS AFTER TESTING, START
-    print_thankYouMessage();
+    //print_thankYouMessage();
     // UNCOMMENT THIS AFTER TESTING, END
     
     char* iataAirportCode;
@@ -11,17 +11,15 @@ int main() {
 
     do{
         startNCurses();
-        downloadJsonFile(iataAirportCode);
+        //downloadJsonFile(iataAirportCode);
         int arraySize;
         FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
         
-        char currentTime[30];
-        strcpy(currentTime, allFlights[0].arr_estimated_utc);
+        char* currentTime = malloc(10);
+        strcpy(currentTime, getCurrentTimeInUtc());
         
-        // UNCOMMENT THIS AFTER TESTING, START
-        int currentIndex = 0;
+        int currentIndex = getStartingIndex(allFlights, currentTime);
         //int currentIndex = 80;
-        // UNCOMMENT THIS AFTER TESTING, END
         do {
             executeEachNewMinute(allFlights, currentTime, iataAirportCode, &currentIndex);
         } while(currentIndex < arraySize - 3);
@@ -172,6 +170,29 @@ FlightInfo* parse_json(const char *filename, int* arraySize) {
     return flights;
 }
 
+char* getCurrentTimeInUtc() {
+    time_t rawtime;
+    struct tm *timeinfo;
+    
+    // Get current time
+    time(&rawtime);
+
+    // Convert to UTC
+    timeinfo = gmtime(&rawtime);
+
+    // Allocate memory for the return string
+    // Format "HH:MM UTC" needs 10 characters including the null terminator
+    char* time_string = malloc(10);
+    if (time_string == NULL) {
+        return NULL; // Memory allocation failed
+    }
+
+    // Format the time as "HH:MM UTC"
+    strftime(time_string, 10, "%H:%M UTC", timeinfo);
+
+    return time_string;
+}
+
 void startNCurses()
 {
     initscr();
@@ -179,6 +200,16 @@ void startNCurses()
     noecho();
     curs_set(0);
     keypad(stdscr, TRUE);
+}
+
+int getStartingIndex(FlightInfo *allFlights, char* currentTime)
+{
+    for(int i = 0; true; i++) {
+        if(strcmp(allFlights[i].arr_estimated_utc, currentTime) == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataAirportCode, int* currentIndex) {
@@ -201,7 +232,6 @@ void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataA
         }
         else {
             mvprintw(14, 20, "%s is arriving from %s", allFlights[i].flight_iata, allFlights[i].dep_iata);
-            //Sleep(1000);
             print_runwayAnimation();
             Sleep(1000);
             (*currentIndex)++;
