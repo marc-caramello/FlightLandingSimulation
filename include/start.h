@@ -22,6 +22,7 @@ void enterAirportCode(char* iataAirportCode);
 void downloadJsonFile(char* iataAirportCode);
 FlightInfo* parse_json(const char *filename, int* arraySize);
 void startNCurses();
-void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex);
+void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataAirportCode, int* currentIndex);
+void print_messageBeforeLoopingAgain();
 
 #endif

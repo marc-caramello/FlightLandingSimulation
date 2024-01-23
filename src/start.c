@@ -3,31 +3,29 @@
 
 int main() {
     // UNCOMMENT THIS AFTER TESTING, START
-    //print_thankYouMessage();
+    print_thankYouMessage();
     // UNCOMMENT THIS AFTER TESTING, END
     
     char* iataAirportCode;
     enterAirportCode(iataAirportCode);
 
     do{
+        startNCurses();
         downloadJsonFile(iataAirportCode);
         int arraySize;
         FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
-        startNCurses();
-
+        
         char currentTime[30];
         strcpy(currentTime, allFlights[0].arr_estimated_utc);
         
         // UNCOMMENT THIS AFTER TESTING, START
-        //int currentIndex = 0;
-        int currentIndex = 80;
+        int currentIndex = 0;
+        //int currentIndex = 80;
         // UNCOMMENT THIS AFTER TESTING, END
         do {
-            executeEachNewMinute(allFlights, currentTime, &currentIndex);
+            executeEachNewMinute(allFlights, currentTime, iataAirportCode, &currentIndex);
         } while(currentIndex < arraySize - 3);
-
-        
-
+        print_messageBeforeLoopingAgain();
     } while(true);
     return 0;
 }
@@ -52,7 +50,6 @@ void print_thankYouMessage()
 
 void enterAirportCode(char* iataAirportCode)
 {
-    //char finalInput[4];
     do {
         printf("Please enter the IATA airport code: ");
         char userInput[100];
@@ -90,14 +87,15 @@ void downloadJsonFile(char* finalInput)
     char currentDirectory[MAX_PATH];
     GetCurrentDirectory(MAX_PATH, currentDirectory);
 
-    printf("Connecting to external API\n");
-    printf("\n");
-    printf("\n");
-    printf("\n");
-    printf("Please wait 5 seconds for this screen to exit");
-    //Sleep(5000);
-    system("cls");
+    printw("Connecting to external API\n");
+    printw("\n");
+    printw("\n");
+    printw("\n");
+    printw("Please wait 5 seconds for this screen to exit");
+    refresh();
+    Sleep(5000);
 
+    clear();
     const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
     const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
     int finalUrl_size = strlen(url_part1) + strlen(finalInput) + strlen(url_part2) + 1;
@@ -106,19 +104,18 @@ void downloadJsonFile(char* finalInput)
     strcat(finalUrl_narrow, finalInput);
     strcat(finalUrl_narrow, url_part2);
 
-    // Specify the path where you want to save the downloaded file
     char filePath[MAX_PATH];
     snprintf(filePath, MAX_PATH, "%s\\temp.json", currentDirectory);
 
-    printf("Downloading json file from external API\n");
-    printf("\n");
-    printf("\n");
-    printf("\n");
-    printf("Please wait 5 seconds for this screen to exit");
-    //Sleep(5000);
-    system("cls");
+    printw("Downloading json file from external API\n");
+    printw("\n");
+    printw("\n");
+    printw("\n");
+    printw("Please wait 5 seconds for this screen to exit");
+    refresh();
+    Sleep(5000);
 
-    //URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
+    URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
 }
 
 FlightInfo* parse_json(const char *filename, int* arraySize) {
@@ -184,11 +181,11 @@ void startNCurses()
     keypad(stdscr, TRUE);
 }
 
-void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex) {
+void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataAirportCode, int* currentIndex) {
     clear();
     strcpy(currentTime, allFlights[*currentIndex].arr_estimated_utc);
 
-    mvprintw(1, 10, "All flights that are landing right now in %s", "ATL");
+    mvprintw(1, 10, "All flights that are landing right now in %s", iataAirportCode);
     mvprintw(2, 10, "                                            ");
     refresh();
     Sleep(1000);
@@ -210,4 +207,23 @@ void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* curre
             (*currentIndex)++;
         }
     }
+}
+
+void print_messageBeforeLoopingAgain()
+{
+    printw("The current json file is now empty.\n");
+    printw("\n");
+    printw("\n");
+    printw("\n");
+    printw("Please wait 5 seconds for this screen to exit");
+    refresh();
+    Sleep(5000);
+
+    printw("The program will now make another API request to download the most-recent arrival data.\n");
+    printw("\n");
+    printw("\n");
+    printw("\n");
+    printw("Please wait 5 seconds for this screen to exit");
+    refresh();
+    Sleep(5000);
 }
