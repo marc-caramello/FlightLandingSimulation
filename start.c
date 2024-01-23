@@ -10,10 +10,14 @@ int main() {
 
     char currentTime[30];
     strcpy(currentTime, allFlights[0].arr_estimated_utc);
-    int currentIndex = 0;
+    
+    // UNCOMMENT THIS AFTER TESTING, START
+    //int currentIndex = 0;
+    int currentIndex = 95;
+    // UNCOMMENT THIS AFTER TESTING, END
     do {
         executeEachNewMinute(allFlights, currentTime, &currentIndex);
-    } while(currentIndex < arraySize);
+    } while(currentIndex < arraySize - 3);
 
     //print_runwayAnimation();
     
