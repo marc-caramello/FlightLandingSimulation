@@ -13,9 +13,9 @@
 #define MAX_FLIGHTS_TO_STORE 5000
 
 typedef struct {
-    char flight_iata[7];
-    char dep_iata[4];
     char arr_estimated_utc[30];
+    char dep_iata[4];
+    char flight_iata[7];
 } FlightInfo;
 
 void print_thankYouMessage();
@@ -25,7 +25,7 @@ FlightInfo* parse_json(const char *filename, int* arraySize);
 char* getCurrentTimeInUtc();
 void startNCurses();
 int getStartingIndex(FlightInfo *allFlights, char* currentTime);
-void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataAirportCode, int* currentIndex);
+void executeEachNewMinute(FlightInfo *allFlights, char* iataAirportCode, int* currentIndex);
 void print_messageBeforeLoopingAgain();
 
 #endif

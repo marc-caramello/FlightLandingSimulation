@@ -11,17 +11,17 @@ int main() {
 
     do{
         startNCurses();
-        //downloadJsonFile(iataAirportCode);
+        downloadJsonFile(iataAirportCode);
         int arraySize;
         FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
         
         char* currentTime = malloc(10);
         strcpy(currentTime, getCurrentTimeInUtc());
         
-        int currentIndex = getStartingIndex(allFlights, currentTime);
-        //int currentIndex = 80;
+        //int currentIndex = getStartingIndex(allFlights, currentTime);
+        int currentIndex = 0;
         do {
-            executeEachNewMinute(allFlights, currentTime, iataAirportCode, &currentIndex);
+            executeEachNewMinute(allFlights, iataAirportCode, &currentIndex);
         } while(currentIndex < arraySize - 3);
         print_messageBeforeLoopingAgain();
     } while(true);
@@ -95,7 +95,7 @@ void downloadJsonFile(char* finalInput)
 
     clear();
     const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
-    const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
+    const char url_part2[] = "&_fields=arr_estimated_utc,dep_iata,flight_iata,&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
     int finalUrl_size = strlen(url_part1) + strlen(finalInput) + strlen(url_part2) + 1;
     char finalUrl_narrow[finalUrl_size];
     strcpy(finalUrl_narrow, url_part1);
@@ -161,9 +161,9 @@ FlightInfo* parse_json(const char *filename, int* arraySize) {
             arrivalTimeInUtc[5] = '\0';
             strcat(arrivalTimeInUtc, " UTC");
 
-            strncpy(flights[i].flight_iata, flight_iata->valuestring, sizeof(flights[i].flight_iata));
-            strncpy(flights[i].dep_iata, dep_iata->valuestring, sizeof(flights[i].dep_iata));
             strncpy(flights[i].arr_estimated_utc, arrivalTimeInUtc, sizeof(flights[i].arr_estimated_utc));
+            strncpy(flights[i].dep_iata, dep_iata->valuestring, sizeof(flights[i].dep_iata));
+            strncpy(flights[i].flight_iata, flight_iata->valuestring, sizeof(flights[i].flight_iata));
         }
     }
     cJSON_Delete(json);
@@ -204,16 +204,31 @@ void startNCurses()
 
 int getStartingIndex(FlightInfo *allFlights, char* currentTime)
 {
+    // TEST CODE START
+    clear();
+    // TEST CODE END
+
     for(int i = 0; true; i++) {
         if(strcmp(allFlights[i].arr_estimated_utc, currentTime) == 0) {
             return i;
         }
+        // TEST CODE START
+        else {
+            if(i % 10 == 0) {
+                clear();
+            }
+            printw("%s =/= %s\n", allFlights[i].arr_estimated_utc, currentTime);
+            refresh();
+            Sleep(100);
+        }
+        // TEST CODE END
     }
     return -1;
 }
 
-void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataAirportCode, int* currentIndex) {
+void executeEachNewMinute(FlightInfo *allFlights, char* iataAirportCode, int* currentIndex) {
     clear();
+    char* currentTime = malloc(10);
     strcpy(currentTime, allFlights[*currentIndex].arr_estimated_utc);
 
     mvprintw(1, 10, "All flights that are landing right now in %s", iataAirportCode);
@@ -241,6 +256,8 @@ void executeEachNewMinute(FlightInfo *allFlights, char* currentTime, char* iataA
 
 void print_messageBeforeLoopingAgain()
 {
+    clear();
+
     printw("The current json file is now empty.\n");
     printw("\n");
     printw("\n");
