@@ -4,6 +4,9 @@ int main() {
     enterAirportCode_and_downloadJsonFile();
     FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json");
     startNCurses();
+    
+    
+
     //print_runwayAnimation();
     
     return 0;
@@ -111,9 +114,16 @@ FlightInfo* parse_json(const char *filename) {
         cJSON *flightIata = cJSON_GetObjectItem(item, "flight_iata");
         cJSON *arrEstimatedUtc = cJSON_GetObjectItem(item, "arr_estimated_utc");
 
+        char arrivalTimeInUtc[20];
+        int nextIndex = 0;
+        for(int i = 0; i < 5; i++) {
+            arrivalTimeInUtc[i] = arrEstimatedUtc->valuestring[i + 11];
+        }
+        strcat(arrivalTimeInUtc, " UTC");
+
         if (flightIata != NULL && arrEstimatedUtc != NULL) {
             strncpy(flights[i].flight_iata, flightIata->valuestring, sizeof(flights[i].flight_iata));
-            strncpy(flights[i].arr_estimated_utc, arrEstimatedUtc->valuestring, sizeof(flights[i].arr_estimated_utc));
+            strncpy(flights[i].arr_estimated_utc, arrivalTimeInUtc, sizeof(flights[i].arr_estimated_utc));
         }
     }
     cJSON_Delete(json);
