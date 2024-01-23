@@ -5,29 +5,29 @@ void print_runwayAnimation() {
     struct Pair prevPos, newPos;
 
     // Prints: top_left ---> bottom_right
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 11; i++) {
         prevPos = newPos;
         newPos = (struct Pair){(2 * i) + 1, i};
         print_eachFrame(prevPos, newPos);
     }
     // Prints: left ---> right
-    for(int i = 22; i <= 42; i++) {
+    for(int i = 24; i <= 44; i++) {
         prevPos = newPos;
-        newPos = (struct Pair){i, 10};
+        newPos = (struct Pair){i, 11};
         print_eachFrame(prevPos, newPos);
     }
 }
 
 void print_entireRunway() {
-    mvprintw(8,  18, " ________________________ ");
-    mvprintw(9,  18, "|                        |");
-    mvprintw(10, 18, "|                        |");
-    mvprintw(11, 18, "|________________________|");
+    mvprintw(9,  20, " ________________________ ");
+    mvprintw(10, 20, "|                        |");
+    mvprintw(11, 20, "|                        |");
+    mvprintw(12, 20, "|________________________|");
 }
 
 void print_eachFrame(struct Pair prevPos, struct Pair newPos) {
     mvprintw(prevPos.vert, prevPos.horiz, " ");
     mvprintw(newPos.vert, newPos.horiz, "-");
     refresh();
-    Sleep(75);
+    Sleep(50);
 }

@@ -150,7 +150,7 @@ FlightInfo* parse_json(const char *filename) {
 
         if (flight_iata != NULL && arr_estimated_utc != NULL) {
             strncpy(flights[i].flight_iata, flight_iata->valuestring, sizeof(flights[i].flight_iata));
-            strncpy(flights[i].dep_iata, flight_iata->valuestring, sizeof(flights[i].dep_iata));
+            strncpy(flights[i].dep_iata, dep_iata->valuestring, sizeof(flights[i].dep_iata));
             strncpy(flights[i].arr_estimated_utc, arrivalTimeInUtc, sizeof(flights[i].arr_estimated_utc));
         }
     }
@@ -168,18 +168,23 @@ void startNCurses()
 }
 
 void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex) {
-    /*mvprintw(0, 0, "Here is the list of flights that are landing right now as you read this: %s", currentTime);
+    clear();
+    strcpy(currentTime, allFlights[*currentIndex].arr_estimated_utc);
+
+    mvprintw(1, 10, "All flights that are landing right now in %s", "ATL");
+    mvprintw(2, 10, "                                            ");
+    mvprintw(3, 10, "           Current time = %s                ", currentTime);
     refresh();
-    Sleep(3000);*/
+    Sleep(3000);
 
     for(int i = *currentIndex; true; i++) {
         if(strcmp(currentTime, allFlights[i].arr_estimated_utc) != 0) {
             return;
         }
         else {
-            //mvprintw(10, 10, "%s is arriving from %s", allFlights[i].flight_iata, allFlights[i].dep_iata);
+            mvprintw(14, 20, "%s is arriving from %s", allFlights[i].flight_iata, allFlights[i].dep_iata);
             print_runwayAnimation();
-            currentIndex++;
+            (*currentIndex)++;
         }
     }
 }
