@@ -9,7 +9,7 @@
 #include <urlmon.h>
 #include <windows.h>
 
-#define MAX_FLIGHTS_TO_STORE 50
+#define MAX_FLIGHTS_TO_STORE 100
 
 typedef struct {
     char flight_iata[7];
@@ -19,7 +19,7 @@ typedef struct {
 
 void print_thankYouMessage();
 void enterAirportCode_and_downloadJsonFile();
-FlightInfo* parse_json(const char *filename);
+FlightInfo* parse_json(const char *filename, int* arraySize);
 void startNCurses();
 void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex);
 

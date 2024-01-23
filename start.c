@@ -4,7 +4,8 @@
 int main() {
     /*print_thankYouMessage();
     enterAirportCode_and_downloadJsonFile();*/
-    FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json");
+    int arraySize;
+    FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
     startNCurses();
 
     char currentTime[30];
@@ -12,7 +13,7 @@ int main() {
     int currentIndex = 0;
     do {
         executeEachNewMinute(allFlights, currentTime, &currentIndex);
-    } while(true);
+    } while(currentIndex < arraySize);
 
     //print_runwayAnimation();
     
@@ -105,7 +106,7 @@ void enterAirportCode_and_downloadJsonFile()
     //URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
 }
 
-FlightInfo* parse_json(const char *filename) {
+FlightInfo* parse_json(const char *filename, int* arraySize) {
     FILE *file = fopen(filename, "rb");
     if (file == NULL) return NULL;
 
@@ -129,8 +130,10 @@ FlightInfo* parse_json(const char *filename) {
         free(data);
         return NULL;
     }
-    int arraySize = cJSON_GetArraySize(response);
-    int numFlights = arraySize > MAX_FLIGHTS_TO_STORE ? MAX_FLIGHTS_TO_STORE : arraySize;
+    free(data);
+
+    *arraySize = cJSON_GetArraySize(response);
+    int numFlights = (int)(*arraySize) > MAX_FLIGHTS_TO_STORE ? MAX_FLIGHTS_TO_STORE : (int)(*arraySize);
     FlightInfo *flights = (FlightInfo*)malloc(numFlights * sizeof(FlightInfo));
 
     for (int i = 0; i < numFlights; i++) {
@@ -140,22 +143,20 @@ FlightInfo* parse_json(const char *filename) {
         cJSON *dep_iata = cJSON_GetObjectItem(item, "dep_iata");
         cJSON *arr_estimated_utc = cJSON_GetObjectItem(item, "arr_estimated_utc");
 
-        char arrivalTimeInUtc[20];
-        int nextIndex = 0;
-        for(int i = 0; i < 5; i++) {
-            arrivalTimeInUtc[i] = arr_estimated_utc->valuestring[i + 11];
-        }
-        arrivalTimeInUtc[5] = '\0';
-        strcat(arrivalTimeInUtc, " UTC");
+        if (flight_iata != NULL && dep_iata != NULL && arr_estimated_utc != NULL) {
+            char arrivalTimeInUtc[20];
+            for(int j = 0; j < 5; j++) {
+                arrivalTimeInUtc[j] = arr_estimated_utc->valuestring[j + 11];
+            }
+            arrivalTimeInUtc[5] = '\0';
+            strcat(arrivalTimeInUtc, " UTC");
 
-        if (flight_iata != NULL && arr_estimated_utc != NULL) {
             strncpy(flights[i].flight_iata, flight_iata->valuestring, sizeof(flights[i].flight_iata));
             strncpy(flights[i].dep_iata, dep_iata->valuestring, sizeof(flights[i].dep_iata));
             strncpy(flights[i].arr_estimated_utc, arrivalTimeInUtc, sizeof(flights[i].arr_estimated_utc));
         }
     }
     cJSON_Delete(json);
-    free(data);
     return flights;
 }
 
