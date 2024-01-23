@@ -50,6 +50,7 @@ void enterAirportCode_and_downloadJsonFile()
         }
         if(strlen(userInput) == 3 && allLettersAreAlpha) {
             strcpy(finalInput, userInput);
+            system("cls");
             break;
         }
         else {
@@ -57,38 +58,44 @@ void enterAirportCode_and_downloadJsonFile()
             printf("\n");
             printf("\n");
             printf("\n");
-            printf("Please wait 3 seconds for this screen to exit");
-            Sleep(3000);
+            printf("Please wait 5 seconds for this screen to exit");
+            Sleep(5000);
             system("cls");
         }
     } while(true);
-    /*char currentDirectory[MAX_PATH];
-    if (GetCurrentDirectory(MAX_PATH, currentDirectory) != 0) {
-        const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
-        const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
-        int finalUrl_size = strlen(url_part1) + strlen(url_part2) + strlen(finalInput) + 1;
-        char finalUrl_narrow[finalUrl_size];
-        strcpy(finalUrl_narrow, url_part1);
-        strcat(finalUrl_narrow, finalInput);
-        strcat(finalUrl_narrow, url_part2);
+    char currentDirectory[MAX_PATH];
+    GetCurrentDirectory(MAX_PATH, currentDirectory);
 
-        // Specify the path where you want to save the downloaded file
-        char filePath[MAX_PATH];
-        snprintf(filePath, MAX_PATH, "%s\\temp.json", currentDirectory);
+    printf("Connecting to external API\n");
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("Please wait 5 seconds for this screen to exit");
+    Sleep(5000);
+    system("cls");
 
-        // Use URLDownloadToFile to download the file
-        HRESULT result = URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
+    const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
+    const char url_part2[] = "&api_key=7fd7db1a-b297-413f-b998-817aa63226d7";
+    int finalUrl_size = strlen(url_part1) + strlen(url_part2) + strlen(finalInput) + 1;
+    char finalUrl_narrow[finalUrl_size];
+    strcpy(finalUrl_narrow, url_part1);
+    strcat(finalUrl_narrow, finalInput);
+    strcat(finalUrl_narrow, url_part2);
 
-        if (result == S_OK) {
-            printf("File downloaded successfully.\n");
-        }
-        else {
-            printf("Failed to download the file. Error code: 0x%08x\n", result);
-        }
-    }
-    else {
-        printf("Failed to get the current directory.\n");
-    }*/
+    // Specify the path where you want to save the downloaded file
+    char filePath[MAX_PATH];
+    snprintf(filePath, MAX_PATH, "%s\\temp.json", currentDirectory);
+
+    printf("Downloading json file from external API\n");
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("Please wait 5 seconds for this screen to exit");
+    Sleep(5000);
+    system("cls");
+
+    // Use URLDownloadToFile to download the file
+    //URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
 }
 
 FlightInfo* parse_json(const char *filename) {
