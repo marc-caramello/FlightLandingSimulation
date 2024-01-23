@@ -1,5 +1,5 @@
-#include "animation.h"
-#include "start.h"
+#include "../include/animation.h"
+#include "../include/start.h"
 
 int main() {
     // UNCOMMENT THIS AFTER TESTING, START
@@ -8,24 +8,27 @@ int main() {
     
     char* iataAirportCode;
     enterAirportCode(iataAirportCode);
-    downloadJsonFile(iataAirportCode);
 
-    int arraySize;
-    FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
-    startNCurses();
+    do{
+        downloadJsonFile(iataAirportCode);
+        int arraySize;
+        FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
+        startNCurses();
 
-    char currentTime[30];
-    strcpy(currentTime, allFlights[0].arr_estimated_utc);
-    
-    // UNCOMMENT THIS AFTER TESTING, START
-    //int currentIndex = 0;
-    int currentIndex = 95;
-    // UNCOMMENT THIS AFTER TESTING, END
-    do {
-        executeEachNewMinute(allFlights, currentTime, &currentIndex);
-    } while(currentIndex < arraySize - 3);
+        char currentTime[30];
+        strcpy(currentTime, allFlights[0].arr_estimated_utc);
+        
+        // UNCOMMENT THIS AFTER TESTING, START
+        //int currentIndex = 0;
+        int currentIndex = 95;
+        // UNCOMMENT THIS AFTER TESTING, END
+        do {
+            executeEachNewMinute(allFlights, currentTime, &currentIndex);
+        } while(currentIndex < arraySize - 3);
 
-    
+        
+
+    } while(true);
     return 0;
 }
 

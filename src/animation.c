@@ -1,4 +1,4 @@
-#include "animation.h"
+#include "../include/animation.h"
 
 void print_runwayAnimation() {
     print_entireRunway();

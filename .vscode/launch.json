@@ -7,7 +7,7 @@
             "externalConsole": true,
             "name": "Start External Program",
             "preLaunchTask": "Compile, Run, & Debug",
-            "program": "${fileDirname}\\runThis.exe",
+            "program": "${workspaceFolder}\\runThis.exe",
             "request": "launch",
             "type": "cppdbg"
         }

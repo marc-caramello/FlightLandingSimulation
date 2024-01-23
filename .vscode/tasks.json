@@ -6,10 +6,9 @@
             "command": "gcc",
             "args": [
                 "-g",
-                "${fileDirname}\\**.c",
-                "${fileDirname}\\**.h",
                 "-o",
-                "${fileDirname}\\runThis.exe",
+                "${workspaceFolder}\\runThis.exe",
+                "${workspaceFolder}\\src\\**.c",
                 "-lcjson",
                 "-lurlmon",
                 "-lncurses",
