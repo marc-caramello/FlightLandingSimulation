@@ -1,10 +1,10 @@
 #include "start.h"
 
 int main() {
+    print_thankYouMessage();
     enterAirportCode_and_downloadJsonFile();
     FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json");
     startNCurses();
-    
     
 
     //print_runwayAnimation();
@@ -14,12 +14,20 @@ int main() {
 
 // --------------------------------------------------
 
-void startNCurses()
+void print_thankYouMessage()
 {
-    initscr();                  // Initialize NCurses
-    cbreak();                   // Disable line buffering
-    noecho();                   // Disable echoing of characters
-    keypad(stdscr, TRUE);       // Enable special key capture
+    system("color 0b");
+    
+    printf("Dear STARS team,\n");
+    printf("Thank you so much for inviting me to join the team.\n");
+    printf("I am so excited about this opportunity of a lifetime.\n");
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("Please wait 10 seconds for this screen to exit");
+
+    Sleep(10000);
+    system("cls");
 }
 
 void enterAirportCode_and_downloadJsonFile()
@@ -46,6 +54,8 @@ void enterAirportCode_and_downloadJsonFile()
         }
         else {
             printf("\"%s\" is not an acceptable IATA airport code\n", userInput);
+            printf("\n");
+            printf("\n");
             printf("\n");
             printf("Please wait 3 seconds for this screen to exit");
             Sleep(3000);
@@ -129,4 +139,12 @@ FlightInfo* parse_json(const char *filename) {
     cJSON_Delete(json);
     free(data);
     return flights;
+}
+
+void startNCurses()
+{
+    initscr();                  // Initialize NCurses
+    cbreak();                   // Disable line buffering
+    noecho();                   // Disable echoing of characters
+    keypad(stdscr, TRUE);       // Enable special key capture
 }
