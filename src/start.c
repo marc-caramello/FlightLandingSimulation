@@ -20,7 +20,7 @@ int main() {
         
         // UNCOMMENT THIS AFTER TESTING, START
         //int currentIndex = 0;
-        int currentIndex = 95;
+        int currentIndex = 80;
         // UNCOMMENT THIS AFTER TESTING, END
         do {
             executeEachNewMinute(allFlights, currentTime, &currentIndex);
@@ -95,7 +95,7 @@ void downloadJsonFile(char* finalInput)
     printf("\n");
     printf("\n");
     printf("Please wait 5 seconds for this screen to exit");
-    Sleep(5000);
+    //Sleep(5000);
     system("cls");
 
     const char url_part1[] = "https://airlabs.co/api/v9/schedules?arr_iata=";
@@ -115,10 +115,9 @@ void downloadJsonFile(char* finalInput)
     printf("\n");
     printf("\n");
     printf("Please wait 5 seconds for this screen to exit");
-    Sleep(5000);
+    //Sleep(5000);
     system("cls");
 
-    // Use URLDownloadToFile to download the file
     //URLDownloadToFileA(NULL, finalUrl_narrow, filePath, 0, NULL);
 }
 
@@ -178,10 +177,11 @@ FlightInfo* parse_json(const char *filename, int* arraySize) {
 
 void startNCurses()
 {
-    initscr();                  // Initialize NCurses
-    cbreak();                   // Disable line buffering
-    noecho();                   // Disable echoing of characters
-    keypad(stdscr, TRUE);       // Enable special key capture
+    initscr();
+    cbreak();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
 }
 
 void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex) {
@@ -190,17 +190,23 @@ void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* curre
 
     mvprintw(1, 10, "All flights that are landing right now in %s", "ATL");
     mvprintw(2, 10, "                                            ");
+    refresh();
+    Sleep(1000);
+
     mvprintw(3, 10, "           Current time = %s                ", currentTime);
     refresh();
-    Sleep(3000);
+    Sleep(2000);
 
     for(int i = *currentIndex; true; i++) {
         if(strcmp(currentTime, allFlights[i].arr_estimated_utc) != 0) {
+            refresh();
             return;
         }
         else {
             mvprintw(14, 20, "%s is arriving from %s", allFlights[i].flight_iata, allFlights[i].dep_iata);
+            //Sleep(1000);
             print_runwayAnimation();
+            Sleep(1000);
             (*currentIndex)++;
         }
     }

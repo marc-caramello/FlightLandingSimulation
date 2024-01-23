@@ -11,7 +11,7 @@ void print_runwayAnimation() {
         print_eachFrame(prevPos, newPos);
     }
     // Prints: left ---> right
-    for(int i = 24; i <= 44; i++) {
+    for(int i = 24; i <= 42; i++) {
         prevPos = newPos;
         newPos = (struct Pair){i, 11};
         print_eachFrame(prevPos, newPos);
@@ -26,8 +26,8 @@ void print_entireRunway() {
 }
 
 void print_eachFrame(struct Pair prevPos, struct Pair newPos) {
-    mvprintw(prevPos.vert, prevPos.horiz, " ");
-    mvprintw(newPos.vert, newPos.horiz, "-");
+    mvprintw(prevPos.vert, prevPos.horiz, "  ");
+    mvprintw(newPos.vert, newPos.horiz, "-|");
     refresh();
     Sleep(50);
 }
