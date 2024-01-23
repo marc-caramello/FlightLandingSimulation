@@ -2,8 +2,14 @@
 #include "start.h"
 
 int main() {
-    /*print_thankYouMessage();
-    enterAirportCode_and_downloadJsonFile();*/
+    // UNCOMMENT THIS AFTER TESTING, START
+    //print_thankYouMessage();
+    // UNCOMMENT THIS AFTER TESTING, END
+    
+    char* iataAirportCode;
+    enterAirportCode(iataAirportCode);
+    downloadJsonFile(iataAirportCode);
+
     int arraySize;
     FlightInfo *allFlights = parse_json("C:\\Users\\marcc\\OneDrive\\Desktop\\CodingProjects\\Cursor\\FlightLandingSimulation\\temp.json", &arraySize);
     startNCurses();
@@ -19,7 +25,6 @@ int main() {
         executeEachNewMinute(allFlights, currentTime, &currentIndex);
     } while(currentIndex < arraySize - 3);
 
-    //print_runwayAnimation();
     
     return 0;
 }
@@ -28,7 +33,7 @@ int main() {
 
 void print_thankYouMessage()
 {
-    system("color 0b");
+    system("color 0f");
     
     printf("Dear STARS team,\n");
     printf("Thank you so much for inviting me to join the team.\n");
@@ -42,9 +47,9 @@ void print_thankYouMessage()
     system("cls");
 }
 
-void enterAirportCode_and_downloadJsonFile()
+void enterAirportCode(char* iataAirportCode)
 {
-    char finalInput[4];
+    //char finalInput[4];
     do {
         printf("Please enter the IATA airport code: ");
         char userInput[100];
@@ -61,7 +66,7 @@ void enterAirportCode_and_downloadJsonFile()
             }
         }
         if(strlen(userInput) == 3 && allLettersAreAlpha) {
-            strcpy(finalInput, userInput);
+            strcpy(iataAirportCode, userInput);
             system("cls");
             break;
         }
@@ -75,6 +80,10 @@ void enterAirportCode_and_downloadJsonFile()
             system("cls");
         }
     } while(true);
+}
+
+void downloadJsonFile(char* finalInput)
+{
     char currentDirectory[MAX_PATH];
     GetCurrentDirectory(MAX_PATH, currentDirectory);
 

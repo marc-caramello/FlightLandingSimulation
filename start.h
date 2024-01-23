@@ -18,7 +18,8 @@ typedef struct {
 } FlightInfo;
 
 void print_thankYouMessage();
-void enterAirportCode_and_downloadJsonFile();
+void enterAirportCode(char* iataAirportCode);
+void downloadJsonFile(char* iataAirportCode);
 FlightInfo* parse_json(const char *filename, int* arraySize);
 void startNCurses();
 void executeEachNewMinute(FlightInfo *allFlights, char currentTime[], int* currentIndex);
