@@ -1,0 +1,14 @@
+1. Buy premium API so that I can return 1000 flights instead of 100
+
+2. Store the arrival time in the struct as a DateTime instead of char*
+
+3. Change the "getStartingIndex()" function to return the 1st index that is equal to the current time or later than the current time
+
+4. After all animations have completed
+	-Make the program wait for the time to change.
+	-Display a message that says "That's all the flights for CURRENT_TIME. Please wait for the time to change to NEXT_TIME_WHERE_THERES_LANDINGS"
+	-Once the time changes to NEXT_TIME_WHERE_THERES_LANDINGS, then display the next set of animations
+
+5. Change landing messages
+	-From the bottom ---> to the right side of the screen
+	-Making them disappear after landing ---> keep them & stack them vertically. Only make them disappear once the time changes

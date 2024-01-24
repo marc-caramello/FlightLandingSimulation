@@ -3,7 +3,7 @@
 
 int main() {
     // UNCOMMENT THIS AFTER TESTING, START
-    //print_thankYouMessage();
+    print_thankYouMessage();
     // UNCOMMENT THIS AFTER TESTING, END
     
     char* iataAirportCode;
